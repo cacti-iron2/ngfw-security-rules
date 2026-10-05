@@ -1,0 +1,477 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NGFW — Security Rules (фрагмент)",
+    "version": "2.0.0",
+    "description": "Фрагмент OpenAPI Security Rules."
+  },
+  "tags": [
+    { "name": "Security Rules" }
+  ],
+  "paths": {
+    "/api/v2/CreateSecurityRule": {
+      "post": {
+        "tags": ["Security Rules"],
+        "operationId": "CreateSecurityRule",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateSecurityRuleRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "id": { "type": "string" } },
+                  "required": ["id"]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Status" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/UpdateSecurityRule": {
+      "post": {
+        "tags": ["Security Rules"],
+        "operationId": "UpdateSecurityRule",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateSecurityRuleRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "default": {
+            "description": "Default error response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Status" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/DeleteSecurityRule": {
+      "post": {
+        "tags": ["Security Rules"],
+        "operationId": "DeleteSecurityRule",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id"],
+                "properties": { "id": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "default": {
+            "description": "Default error response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Status" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/ListSecurityRules2": {
+      "post": {
+        "tags": ["Security Rules"],
+        "operationId": "ListSecurityRules2",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["limit"],
+                "properties": {
+                  "limit": { "type": "integer", "format": "uint32" },
+                  "cursor": { "type": "string" },
+                  "deviceGroupId": { "type": "string" },
+                  "quickSearch": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["items"],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SecurityRule" }
+                    },
+                    "nextCursor": { "type": "string" },
+                    "prevCursor": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Status" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateSecurityRuleRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "sourceZone",
+          "sourceAddr",
+          "sourceUser",
+          "destinationZone",
+          "destinationAddr",
+          "service",
+          "application",
+          "urlCategory",
+          "action",
+          "logMode",
+          "enabled"
+        ],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "deviceGroupId": { "type": "string" },
+          "position": { "type": "integer", "format": "int32" },
+          "sourceZone": { "$ref": "#/components/schemas/RuleField" },
+          "sourceAddr": { "$ref": "#/components/schemas/RuleField" },
+          "sourceUser": { "$ref": "#/components/schemas/RuleFieldUser" },
+          "destinationZone": { "$ref": "#/components/schemas/RuleField" },
+          "destinationAddr": { "$ref": "#/components/schemas/RuleField" },
+          "service": { "$ref": "#/components/schemas/RuleField" },
+          "application": { "$ref": "#/components/schemas/RuleField" },
+          "urlCategory": { "$ref": "#/components/schemas/RuleField" },
+          "action": { "$ref": "#/components/schemas/Action" },
+          "logMode": { "$ref": "#/components/schemas/LogMode" },
+          "enabled": { "type": "boolean" }
+        }
+      },
+      "UpdateSecurityRuleRequest": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "sourceZone": { "$ref": "#/components/schemas/RuleField" },
+          "sourceAddr": { "$ref": "#/components/schemas/RuleField" },
+          "sourceUser": { "$ref": "#/components/schemas/RuleFieldUser" },
+          "destinationZone": { "$ref": "#/components/schemas/RuleField" },
+          "destinationAddr": { "$ref": "#/components/schemas/RuleField" },
+          "service": { "$ref": "#/components/schemas/RuleField" },
+          "application": { "$ref": "#/components/schemas/RuleField" },
+          "urlCategory": { "$ref": "#/components/schemas/RuleField" },
+          "action": { "$ref": "#/components/schemas/Action" },
+          "logMode": { "$ref": "#/components/schemas/LogMode" },
+          "enabled": { "type": "boolean" }
+        }
+      },
+      "SecurityRule": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "sourceZone",
+          "sourceAddr",
+          "sourceUser",
+          "destinationZone",
+          "destinationAddr",
+          "service",
+          "application",
+          "urlCategory",
+          "action",
+          "logMode",
+          "enabled"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "ruleGroupId": { "type": "string" },
+          "position": { "type": "integer", "format": "int32" },
+          "globalPosition": { "type": "integer", "format": "int32" },
+          "sourceZone": { "$ref": "#/components/schemas/RuleField" },
+          "sourceAddr": { "$ref": "#/components/schemas/RuleField" },
+          "sourceUser": { "$ref": "#/components/schemas/RuleFieldUser" },
+          "destinationZone": { "$ref": "#/components/schemas/RuleField" },
+          "destinationAddr": { "$ref": "#/components/schemas/RuleField" },
+          "service": { "$ref": "#/components/schemas/RuleField" },
+          "application": { "$ref": "#/components/schemas/RuleField" },
+          "urlCategory": { "$ref": "#/components/schemas/RuleField" },
+          "action": { "$ref": "#/components/schemas/Action" },
+          "logMode": { "$ref": "#/components/schemas/LogMode" },
+          "enabled": { "type": "boolean" }
+        }
+      },
+      "RuleField": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": {
+          "kind": { "type": "string", "enum": ["ANY", "LIST"] },
+          "ids": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "RuleFieldUser": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["ANY", "UNKNOWN", "KNOWN", "LIST"]
+          },
+          "ids": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "Action": {
+        "type": "string",
+        "enum": [
+          "SECURITY_RULE_ACTION_UNSPECIFIED",
+          "SECURITY_RULE_ACTION_ALLOW",
+          "SECURITY_RULE_ACTION_DROP",
+          "SECURITY_RULE_ACTION_DENY",
+          "SECURITY_RULE_ACTION_RESET_SERVER",
+          "SECURITY_RULE_ACTION_RESET_CLIENT",
+          "SECURITY_RULE_ACTION_RESET_BOTH"
+        ]
+      },
+      "LogMode": {
+        "type": "string",
+        "enum": [
+          "SECURITY_RULE_LOG_MODE_UNSPECIFIED",
+          "SECURITY_RULE_LOG_MODE_NO_LOG",
+          "SECURITY_RULE_LOG_MODE_AT_SESSION_START",
+          "SECURITY_RULE_LOG_MODE_AT_SESSION_END",
+          "SECURITY_RULE_LOG_MODE_AT_SESSION_START_AND_END",
+          "SECURITY_RULE_LOG_MODE_AT_RULE_HIT",
+          "SECURITY_RULE_LOG_MODE_PERIODICALLY"
+        ]
+      },
+
+      "Status": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The status code.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "A developer-facing error message."
+          },
+          "details": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Detail" },
+            "description": "A list of messages that carry the error details."
+          }
+        },
+        "description": "The `Status` type defines a logical error model."
+      },
+      "Detail": {
+        "type": "object",
+        "properties": {
+          "@type": { "type": "string" }
+        },
+        "oneOf": [
+          { "$ref": "#/components/schemas/ValidationDetail" },
+          { "$ref": "#/components/schemas/ErrorDetail" }
+        ]
+      },
+      "ValidationDetail": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "string",
+            "description": "Путь до поля с ошибкой."
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "ERROR_REASON_UNSPECIFIED",
+              "ERROR_REASON_UNAUTHORIZED",
+              "ERROR_REASON_PERMISSION_DENIED",
+              "ERROR_REASON_INVALID",
+              "ERROR_REASON_NOT_FOUND",
+              "ERROR_REASON_REQUIRED",
+              "ERROR_REASON_EXIST",
+              "ERROR_REASON_USED",
+              "ERROR_REASON_NOT_INSIDE",
+              "ERROR_REASON_NOT_UNIQUE",
+              "ERROR_REASON_EMPTY",
+              "ERROR_REASON_NOT_AVAILABLE",
+              "ERROR_REASON_MATCH_INVALID",
+              "ERROR_REASON_REFERENCE_INVALID",
+              "ERROR_REASON_PASSWORD_CHANGE_REQUIRED",
+              "ERROR_REASON_OBJECT_IS_DEFAULT",
+              "ERROR_REASON_RESTORE_IN_PROGRESS",
+              "ERROR_REASON_ADMIN_IS_BLOCKED",
+              "ERROR_REASON_SERVICE_UNAVAILABLE",
+              "ERROR_REASON_MAINTENANCE_MODE",
+              "ERROR_REASON_TIMEOUT",
+              "ERROR_REASON_PREDEFINED",
+              "ERROR_REASON_DELETE_OBJECT",
+              "ERROR_REASON_REPLACE",
+              "ERROR_REASON_INVALID_FORMAT",
+              "ERROR_REASON_MISSING_INTERMEDIATE",
+              "ERROR_REASON_CERTIFICATE_CHAIN_SIZE",
+              "ERROR_REASON_WRONG_CERTIFICATE_PASSWORD",
+              "ERROR_REASON_PRIVATE_KEY_FORMAT",
+              "ERROR_REASON_CA_FORMAT",
+              "ERROR_REASON_INTERMEDIATE_CERTIFICATE_FORMAT",
+              "ERROR_REASON_PUBLIC_KEY_MISMATCH",
+              "ERROR_REASON_CERTIFICATE_EXPIRED",
+              "ERROR_REASON_CERTIFICATE_NOT_FOUND",
+              "ERROR_REASON_INVALID_FILE_STRUCTURE",
+              "ERROR_REASON_KEY_NOT_FOUND",
+              "ERROR_REASON_NO_SERVER_AUTHENTICATION",
+              "ERROR_REASON_CERTIFICATE_NOT_CA",
+              "ERROR_REASON_MOVE",
+              "ERROR_REASON_SYSTEM_LOCKED",
+              "ERROR_REASON_OUT_OF_RANGE",
+              "ERROR_REASON_SYSTEM_NOT_LOCKED",
+              "ERROR_REASON_APPLY"
+            ],
+            "description": "Идентификатор причины ошибки."
+          },
+          "description": {
+            "type": "string",
+            "description": "Подробное описание ошибки."
+          },
+          "ref": {
+            "$ref": "#/components/schemas/Relationship"
+          }
+        }
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "enum": [
+              "ERROR_REASON_UNSPECIFIED",
+              "ERROR_REASON_UNAUTHORIZED",
+              "ERROR_REASON_PERMISSION_DENIED",
+              "ERROR_REASON_INVALID",
+              "ERROR_REASON_NOT_FOUND",
+              "ERROR_REASON_REQUIRED",
+              "ERROR_REASON_EXIST",
+              "ERROR_REASON_USED",
+              "ERROR_REASON_NOT_INSIDE",
+              "ERROR_REASON_NOT_UNIQUE",
+              "ERROR_REASON_EMPTY",
+              "ERROR_REASON_NOT_AVAILABLE",
+              "ERROR_REASON_MATCH_INVALID",
+              "ERROR_REASON_REFERENCE_INVALID",
+              "ERROR_REASON_PASSWORD_CHANGE_REQUIRED",
+              "ERROR_REASON_OBJECT_IS_DEFAULT",
+              "ERROR_REASON_RESTORE_IN_PROGRESS",
+              "ERROR_REASON_ADMIN_IS_BLOCKED",
+              "ERROR_REASON_SERVICE_UNAVAILABLE",
+              "ERROR_REASON_MAINTENANCE_MODE",
+              "ERROR_REASON_TIMEOUT",
+              "ERROR_REASON_PREDEFINED",
+              "ERROR_REASON_DELETE_OBJECT",
+              "ERROR_REASON_REPLACE",
+              "ERROR_REASON_INVALID_FORMAT",
+              "ERROR_REASON_MISSING_INTERMEDIATE",
+              "ERROR_REASON_CERTIFICATE_CHAIN_SIZE",
+              "ERROR_REASON_WRONG_CERTIFICATE_PASSWORD",
+              "ERROR_REASON_PRIVATE_KEY_FORMAT",
+              "ERROR_REASON_CA_FORMAT",
+              "ERROR_REASON_INTERMEDIATE_CERTIFICATE_FORMAT",
+              "ERROR_REASON_PUBLIC_KEY_MISMATCH",
+              "ERROR_REASON_CERTIFICATE_EXPIRED",
+              "ERROR_REASON_CERTIFICATE_NOT_FOUND",
+              "ERROR_REASON_INVALID_FILE_STRUCTURE",
+              "ERROR_REASON_KEY_NOT_FOUND",
+              "ERROR_REASON_NO_SERVER_AUTHENTICATION",
+              "ERROR_REASON_CERTIFICATE_NOT_CA",
+              "ERROR_REASON_MOVE",
+              "ERROR_REASON_SYSTEM_LOCKED",
+              "ERROR_REASON_OUT_OF_RANGE",
+              "ERROR_REASON_SYSTEM_NOT_LOCKED",
+              "ERROR_REASON_APPLY"
+            ],
+            "description": "Идентификатор причины ошибки."
+          },
+          "description": {
+            "type": "string",
+            "description": "Подробное описание ошибки."
+          }
+        }
+      },
+      "Relationship": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Идентификатор объекта."
+          },
+          "name": {
+            "type": "string",
+            "description": "Наименование объекта."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ENTITY_TYPE_UNSPECIFIED",
+              "ENTITY_TYPE_SECURITY_RULE",
+              "ENTITY_TYPE_NAT_RULE",
+              "ENTITY_TYPE_ZONE",
+              "ENTITY_TYPE_NETWORK_OBJECT",
+              "ENTITY_TYPE_SERVICE",
+              "ENTITY_TYPE_APPLICATION",
+              "ENTITY_TYPE_URL_CATEGORY",
+              "ENTITY_TYPE_IPS_PROFILE",
+              "ENTITY_TYPE_ANTIVIRUS_PROFILE",
+              "ENTITY_TYPE_ICAP_PROFILE"
+            ],
+            "description": "Тип объекта."
+          }
+        }
+      }
+    }
+  }
+}
