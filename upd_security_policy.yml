@@ -1,0 +1,334 @@
+openapi: 3.0.3
+info:
+  title: NGFW — Security Rules (фрагмент)
+  version: 2.0.0
+  description: Фрагмент OpenAPI Security Rules.
+tags:
+  - name: Security Rules
+paths:
+  /api/v2/CreateSecurityRule:
+    post:
+      tags:
+        - Security Rules
+      operationId: CreateSecurityRule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSecurityRuleRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /api/v2/UpdateSecurityRule:
+    post:
+      tags:
+        - Security Rules
+      operationId: UpdateSecurityRule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSecurityRuleRequest'
+      responses:
+        '200':
+          description: OK
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /api/v2/DeleteSecurityRule:
+    post:
+      tags:
+        - Security Rules
+      operationId: DeleteSecurityRule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+      responses:
+        '200':
+          description: OK
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /api/v2/ListSecurityRules2:
+    post:
+      tags:
+        - Security Rules
+      operationId: ListSecurityRules2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - limit
+              properties:
+                limit:
+                  type: integer
+                  format: uint32
+                cursor:
+                  type: string
+                deviceGroupId:
+                  type: string
+                quickSearch:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SecurityRule'
+                  nextCursor:
+                    type: string
+                  prevCursor:
+                    type: string
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+components:
+  schemas:
+    CreateSecurityRuleRequest:
+      type: object
+      required:
+        - name
+        - sourceZone
+        - sourceAddr
+        - sourceUser
+        - destinationZone
+        - destinationAddr
+        - service
+        - application
+        - urlCategory
+        - action
+        - logMode
+        - enabled
+        - deviceGroupId  # <--- ДОБАВЛЕНО СЮДА
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        deviceGroupId:
+          type: string
+        position:
+          type: integer
+          format: int32
+        sourceZone:
+          $ref: '#/components/schemas/RuleField'
+        sourceAddr:
+          $ref: '#/components/schemas/RuleField'
+        sourceUser:
+          $ref: '#/components/schemas/RuleFieldUser'
+        destinationZone:
+          $ref: '#/components/schemas/RuleField'
+        destinationAddr:
+          $ref: '#/components/schemas/RuleField'
+        service:
+          $ref: '#/components/schemas/RuleField'
+        application:
+          $ref: '#/components/schemas/RuleField'
+        urlCategory:
+          $ref: '#/components/schemas/RuleField'
+        action:
+          $ref: '#/components/schemas/Action'
+        logMode:
+          $ref: '#/components/schemas/LogMode'
+        enabled:
+          type: boolean
+    UpdateSecurityRuleRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        sourceZone:
+          $ref: '#/components/schemas/RuleField'
+        sourceAddr:
+          $ref: '#/components/schemas/RuleField'
+        sourceUser:
+          $ref: '#/components/schemas/RuleFieldUser'
+        destinationZone:
+          $ref: '#/components/schemas/RuleField'
+        destinationAddr:
+          $ref: '#/components/schemas/RuleField'
+        service:
+          $ref: '#/components/schemas/RuleField'
+        application:
+          $ref: '#/components/schemas/RuleField'
+        urlCategory:
+          $ref: '#/components/schemas/RuleField'
+        action:
+          $ref: '#/components/schemas/Action'
+        logMode:
+          $ref: '#/components/schemas/LogMode'
+        enabled:
+          type: boolean
+    SecurityRule:
+      type: object
+      required:
+        - id
+        - name
+        - sourceZone
+        - sourceAddr
+        - sourceUser
+        - destinationZone
+        - destinationAddr
+        - service
+        - application
+        - urlCategory
+        - action
+        - logMode
+        - enabled
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        ruleGroupId:
+          type: string
+        position:
+          type: integer
+          format: int32
+        globalPosition:
+          type: integer
+          format: int32
+        sourceZone:
+          $ref: '#/components/schemas/RuleField'
+        sourceAddr:
+          $ref: '#/components/schemas/RuleField'
+        sourceUser:
+          $ref: '#/components/schemas/RuleFieldUser'
+        destinationZone:
+          $ref: '#/components/schemas/RuleField'
+        destinationAddr:
+          $ref: '#/components/schemas/RuleField'
+        service:
+          $ref: '#/components/schemas/RuleField'
+        application:
+          $ref: '#/components/schemas/RuleField'
+        urlCategory:
+          $ref: '#/components/schemas/RuleField'
+        action:
+          $ref: '#/components/schemas/Action'
+        logMode:
+          $ref: '#/components/schemas/LogMode'
+        enabled:
+          type: boolean
+    RuleField:
+      type: object
+      required:
+        - kind
+      properties:
+        kind:
+          type: string
+          enum:
+            - ANY
+            - LIST
+        ids:
+          type: array
+          items:
+            type: string
+    RuleFieldUser:
+      type: object
+      required:
+        - kind
+      properties:
+        kind:
+          type: string
+          enum:
+            - ANY
+            - UNKNOWN
+            - KNOWN
+            - LIST
+        ids:
+          type: array
+          items:
+            type: string
+    Action:
+      type: string
+      enum:
+        - SECURITY_RULE_ACTION_UNSPECIFIED
+        - SECURITY_RULE_ACTION_ALLOW
+        - SECURITY_RULE_ACTION_DROP
+        - SECURITY_RULE_ACTION_DENY
+        - SECURITY_RULE_ACTION_RESET_SERVER
+        - SECURITY_RULE_ACTION_RESET_CLIENT
+        - SECURITY_RULE_ACTION_RESET_BOTH
+    LogMode:
+      type: string
+      enum:
+        - SECURITY_RULE_LOG_MODE_UNSPECIFIED
+        - SECURITY_RULE_LOG_MODE_NO_LOG
+        - SECURITY_RULE_LOG_MODE_AT_SESSION_START
+        - SECURITY_RULE_LOG_MODE_AT_SESSION_END
+        - SECURITY_RULE_LOG_MODE_AT_SESSION_START_AND_END
+        - SECURITY_RULE_LOG_MODE_AT_RULE_HIT
+        - SECURITY_RULE_LOG_MODE_PERIODICALLY
+    Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              '@type':
+                type: string
+              reason:
+                type: string
+              description:
+                type: string
